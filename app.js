@@ -1,17 +1,16 @@
-const express = require('express');
-const rateLimit = require('express-rate-limit');
+require('dotenv').config()
 
-// Rate limit
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, 
-    max: 10, 
-    message: 'Too many requests from this IP, please try again | <h1>why u so bad 😑.</h1>' ,
-    headers: true, // Show rate limit headers
-});
-  
+const express = require('express');
+const cors = require('cors');   
+const { init } = require('./database/initDatabase.js');
+const { createRateLimiter } = require('./rateLimit/rateLimit.js');
+
+
 // setting up express
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+init();
 
 // Import 
 const middleWare = require('./Middleware/middleWare.js');
@@ -20,14 +19,27 @@ const userRouter = require('./routes/userRouter.js');
 // App use 
 app.use(express.json());
 app.use(middleWare.keepLog);
-app.use(limiter);
+app.use(createRateLimiter());
+app.use(cors());
 
 
 // Routes
-app.use('/users', userRouter);
+app.use('/api/auth', userRouter);
 
 
 // Listen
 app.listen(PORT, () => {
-    console.log('\x1b[31m',"[jay] Running on http://localhost:3000");
+    console.log('\x1b[31m');
+    console.log(`
+
+        ██╗ █████╗ ██╗   ██╗    ███████╗██╗  ██╗██████╗ ██████╗ ███████╗███████╗███████╗
+        ██║██╔══██╗╚██╗ ██╔╝    ██╔════╝╚██╗██╔╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝
+        ██║███████║ ╚████╔╝     █████╗   ╚███╔╝ ██████╔╝██████╔╝█████╗  ███████╗███████╗
+   ██   ██║██╔══██║  ╚██╔╝      ██╔══╝   ██╔██╗ ██╔═══╝ ██╔══██╗██╔══╝  ╚════██║╚════██║
+   ╚█████╔╝██║  ██║   ██║       ███████╗██╔╝ ██╗██║     ██║  ██║███████╗███████║███████║
+    ╚════╝ ╚═╝  ╚═╝   ╚═╝       ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
+                                                                                        
+   [jay] Running on http://localhost:3000
+                                                                        `);
+       
 })
