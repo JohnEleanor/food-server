@@ -22,6 +22,9 @@ const UserSchema = new mongoose.Schema({
     height: {
       type: Number,
     },
+    bmi : {
+      type : Number
+    }
   },
   activity: {
     type: Number,

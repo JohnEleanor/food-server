@@ -39,6 +39,7 @@ exports.createUser = async (req, res) => {
         gender: info.gender,
         weight: info.weight,
         height: info.height,
+        bmi : info.bmi
       },
       activity: activity,
       target: target,
