@@ -2,7 +2,7 @@
 const rateLimit = require('express-rate-limit');
 
 // สร้างฟังก์ชัน rateLimit ที่สามารถปรับแต่งการตั้งค่าได้
-function createRateLimiter(windowMs = 15 * 60 * 1000, maxRequests = 10) {
+function createRateLimiter(windowMs = 15 * 60 * 1000, maxRequests = 100) {
   return rateLimit({
     windowMs, // กำหนดช่วงเวลาที่จำกัดจำนวนการทำคำขอ
     max: maxRequests, // กำหนดจำนวนคำขอสูงสุด

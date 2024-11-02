@@ -21,10 +21,10 @@ const UserSchema = new mongoose.Schema({
     },
   },
   activity: {
-    type: String,
+    type: Number,
   },
   target: {
-    type: String,
+    type: Number,
   },
 });
 

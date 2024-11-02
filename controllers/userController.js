@@ -2,7 +2,7 @@ const User = require("./modules/findUserById"); // นำเข้าโมเ�
 // const createUser = require("./modules/createUser"); // นำเข้าโมเดล createUser
 
 exports.getUserById = async (request, res) => {
-  const userId_ = request.body.userId;
+  const userId_ = request.query.userId;
 
   try {
     const user = await User.findOne({ userId: userId_ });
@@ -17,7 +17,6 @@ exports.getUserById = async (request, res) => {
 
     res.json({ status: "ok", user });
   } catch (error) {
-    console.log(error);
     const data = { status: "fail", message: error };
     res.json(data);
   }
@@ -25,7 +24,7 @@ exports.getUserById = async (request, res) => {
 
 exports.createUser = async (req, res) => {
   const { userId, info, activity, target } = req.body;
-  if (!userId || !info || !activity || !target) {
+  if (!userId || !info ) {
     return res
       .status(400)
       .json({ status: "fail", message: "Missing required fields" });
@@ -45,7 +44,6 @@ exports.createUser = async (req, res) => {
      
     });
     const result = await user.save();
-    console.log(result);
     if (result.code === 11000) {
       return res.json({ status: "fail", message: "User already exists" });
     }
@@ -54,7 +52,6 @@ exports.createUser = async (req, res) => {
       return res.json({ status: "ok", message: "User created" });
     }
   } catch (error) {
-    // console.log(error);
     if (error.name === "ValidationError") {
       const data = {
         status: "fail",
