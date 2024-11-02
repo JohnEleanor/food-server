@@ -7,6 +7,9 @@ const UserSchema = new mongoose.Schema({
     unique: true, // ทำให้ userId เป็น Primary Key
   },
   info: {
+    name : {
+      type : String 
+    },
     age: {
       type: Number,
     },
@@ -25,6 +28,12 @@ const UserSchema = new mongoose.Schema({
   },
   target: {
     type: Number,
+  },
+  userName: {
+    type: String,
+  },
+  userPictureUrl: {
+    type: String,
   },
 });
 

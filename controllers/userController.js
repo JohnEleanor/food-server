@@ -1,4 +1,4 @@
-const User = require("./modules/findUserById"); // นำเข้าโมเดล User
+const User = require("./modules/userSchema"); // นำเข้าโมเดล User
 // const createUser = require("./modules/createUser"); // นำเข้าโมเดล createUser
 
 exports.getUserById = async (request, res) => {
@@ -23,7 +23,7 @@ exports.getUserById = async (request, res) => {
 };
 
 exports.createUser = async (req, res) => {
-  const { userId, info, activity, target } = req.body;
+  const { userId, info, activity, target, userPictureUrl, userName  } = req.body;
   if (!userId || !info ) {
     return res
       .status(400)
@@ -34,6 +34,7 @@ exports.createUser = async (req, res) => {
     const user = new User({
       userId: userId,
       info: {
+        name: info.name,
         age: info.age,
         gender: info.gender,
         weight: info.weight,
@@ -41,6 +42,8 @@ exports.createUser = async (req, res) => {
       },
       activity: activity,
       target: target,
+      userPictureUrl : userPictureUrl,
+      userName : userName
      
     });
     const result = await user.save();
@@ -49,7 +52,7 @@ exports.createUser = async (req, res) => {
     }
 
     if (result) {
-      return res.json({ status: "ok", message: "User created" });
+      return res.json({ status: "ok", message: "User created", userId : userId });
     }
   } catch (error) {
     if (error.name === "ValidationError") {
